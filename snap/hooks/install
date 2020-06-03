@@ -1,0 +1,4 @@
+#!/bin/bash
+
+snapctl set src-port=8080
+snapctl set dest-port=8081

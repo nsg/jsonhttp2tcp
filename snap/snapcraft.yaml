@@ -1,0 +1,24 @@
+name: jsonhttp2tcp
+base: core18
+version: '0.1.0'
+summary: A tool that receives JSON via HTTP and relays it over plain TCP
+description: |
+  A tool that receives JSON via HTTP and relays it over plain TCP.
+
+grade: stable
+confinement: strict
+
+apps:
+  service:
+    command: bin/service
+    plugs:
+      - network
+      - network-bind
+    daemon: simple
+
+parts:
+  jsonhttp2tcp:
+    plugin: python
+    source: src
+    requirements:
+      - requirements.txt
