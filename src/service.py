@@ -3,6 +3,7 @@ from waitress import serve
 
 import subprocess
 import socket
+import json
 
 app = Flask(__name__)
 
@@ -18,7 +19,7 @@ def get_config(val):
 @app.route("/", methods=["POST"])
 def index():
     data = request.get_json()
-    send_tcp(str(data))
+    send_tcp(json.dumps(data))
     return jsonify({})
 
 
