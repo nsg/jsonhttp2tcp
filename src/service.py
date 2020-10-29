@@ -4,17 +4,20 @@ from waitress import serve
 import subprocess
 import socket
 import json
+import os
 
 app = Flask(__name__)
 
 
 def get_config(val):
-    stdout, _ = subprocess.Popen(
-        ["snapctl", "get", val], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    ).communicate()
-    o = stdout.decode("utf-8").strip()
-    return o
-
+    if int(os.getenv("INDOCKER")) == 1:
+        return os.getenv(val.replace("-", "_").upper())
+    else:
+        stdout, _ = subprocess.Popen(
+            ["snapctl", "get", val], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        ).communicate()
+        o = stdout.decode("utf-8").strip()
+        return o
 
 @app.route("/", methods=["POST"])
 def index():
