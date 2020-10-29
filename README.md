@@ -14,6 +14,7 @@ Automatic build by build.snapcraft.io, run `snapcraft` to trigger an local build
 sudo snap install jsonhttp2tcp
 sudo snap jsonhttp2tcp src-port=8080
 sudo snap jsonhttp2tcp dest-port=8081
+sudo snap jsonhttp2tcp dest-addr=127.0.0.1
 ```
 
 ## Docker
@@ -27,5 +28,5 @@ sudo docker build . -t nsgb/jsonhttp2tcp
 ### Run and configure
 
 ```
-sudo docker run -ti -e SRC_PORT=8080 -e DEST_PORT=8081 nsgb/jsonhttp2tcp
+sudo docker run -ti -e SRC_PORT=8080 -e DEST_PORT=8081 -e DEST_ADDR=127.0.0.1 nsgb/jsonhttp2tcp
 ```

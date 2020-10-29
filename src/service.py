@@ -9,15 +9,19 @@ import os
 app = Flask(__name__)
 
 
-def get_config(val):
+def get_config(val, default=None):
     if int(os.getenv("INDOCKER")) == 1:
-        return os.getenv(val.replace("-", "_").upper())
+        ret = os.getenv(val.replace("-", "_").upper())
     else:
         stdout, _ = subprocess.Popen(
             ["snapctl", "get", val], stdout=subprocess.PIPE, stderr=subprocess.STDOUT
         ).communicate()
-        o = stdout.decode("utf-8").strip()
-        return o
+        ret = stdout.decode("utf-8").strip()
+
+    if ret:
+        return ret
+    return default
+
 
 @app.route("/", methods=["POST"])
 def index():
@@ -29,7 +33,7 @@ def index():
 def send_tcp(data):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("127.0.0.1", int(get_config("dest-port"))))
+        s.connect((get_config("dest-addr", "127.0.0.1"), int(get_config("dest-port"))))
         s.sendall(bytes(data, encoding="utf-8"))
     finally:
         s.close()
